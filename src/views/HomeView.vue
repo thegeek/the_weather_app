@@ -28,6 +28,14 @@
         </template>
       </ul>
     </div>
+    <div class="flex flex-col gap-4">
+      <Suspense>
+        <CityList />
+        <template #fallback>
+          <CityCardSkeleton />
+        </template>
+      </Suspense>
+    </div>
   </main>
 </template>
 
@@ -35,6 +43,8 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import CityList from '../components/CityList.vue';
+import CityCardSkeleton from '../components/CityCardSkeleton.vue';
 
 const mapboxAPIKey =
   'pk.eyJ1IjoiZmZpLWJpdDRpZCIsImEiOiJjbGpwb2EybXYwMTZsM3VwN21mMXMxM3F6In0.WCI09aClwzBu0qRZcMeLLg';
