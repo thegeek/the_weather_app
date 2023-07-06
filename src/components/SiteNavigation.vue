@@ -18,9 +18,14 @@
           @click="addCity"
           v-if="route.query.preview"
         ></i>
+        <i
+          class="fa-solid fa-trash text-2xl hover:text-red-500 duration-150 cursor-pointer"
+          v-if="!route.query.preview && route.name === 'cityView'"
+          @click="removeCurrentCity"
+        ></i>
       </div>
 
-      <BaseModal :modal-active="modalActive" @close-modal="toggleModal">
+      <BaseModal :modal-active="modalInfoActive" @close-modal="toggleModal">
         <div class="text-black">
           <h1 class="text-2xl mb-1">About:</h1>
           <p class="mb-4">
@@ -56,6 +61,7 @@ import { RouterLink, useRoute, useRouter } from 'vue-router';
 import BaseModal from './BaseModal.vue';
 import { ref } from 'vue';
 import { uid } from 'uid';
+import { removeCity } from '../store/removeStore';
 
 const savedCities = ref([]);
 const route = useRoute();
@@ -82,8 +88,18 @@ const addCity = () => {
   router.replace({ query });
 };
 
-const modalActive = ref(null);
+const modalInfoActive = ref(null);
 const toggleModal = () => {
-  modalActive.value = !modalActive.value;
+  modalInfoActive.value = !modalInfoActive.value;
+};
+
+const removeCurrentCity = () => {
+  if (route.name !== 'cityView') {
+    return;
+  }
+  removeCity.value.remove(route.query.id);
+  router.push({
+    name: 'home'
+  });
 };
 </script>

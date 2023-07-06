@@ -79,7 +79,7 @@
 
     <div
       class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500"
-      @click="removeCity"
+      @click="removeCurrentCity"
       v-show="!route.query.preview"
     >
       <i class="fa-solid fa-trash"></i>
@@ -92,6 +92,7 @@
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { openweatherAPIKey, units } from '../constants';
+import { removeCity } from '../store/removeStore';
 
 const route = useRoute();
 const router = useRouter();
@@ -141,10 +142,8 @@ const getWeatherData = async () => {
 
 const weatherData = await getWeatherData();
 
-const removeCity = () => {
-  const cities = JSON.parse(localStorage.getItem('savedCities'));
-  const updatedCities = cities.filter((city) => city.id !== route.query.id);
-  localStorage.setItem('savedCities', JSON.stringify(updatedCities));
+const removeCurrentCity = () => {
+  removeCity.value.remove(route.query.id);
   router.push({
     name: 'home'
   });
